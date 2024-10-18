@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+
+{% block title %}Новый пост{% endblock %}
+
+{% block content %}
+
+    <h3>Новый пост</h3><br>
+
+    <form action="" method="POST">
+            <div class="mb-3">
+                {{ form.title.label(class="form-label") }}
+                {{ form.title(class="form-control") }}
+            </div>
+            <div class="mb-3">
+                {% for tag in tags %}
+                    <input name="tag" type="checkbox" class="custom-control-input" id="check{{tags.index(tag)}}" value="{{ tag }}">
+                    <label style="margin-right: 10px" class="custom-control-label" for="check{{tags.index(tag)}}">{{ tag }}</label>
+                {% endfor %}
+            </div>
+            <div class="mb-3">
+                {{ form.description.label(class="form-label") }}
+                {{ form.description(class="form-control") }}
+            </div>
+            <div class="mb-3">
+                {{ form.content.label(class="form-label") }}
+                {{ form.content(class="form-control") }}
+            </div>
+        <button class="btn btn-success" type="submit">Создать</button>
+    </form>
+{% endblock %}

@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+
+{% block title %}Главная{% endblock %}
+
+{% block content %}
+
+    <div class="px-4 py-5 my-5 text-center">
+    <img class="mb-3" width="250px" src="{{ url_for('index') }}static/img/notion.svg" alt="">
+    <div class="col-lg-10 mx-auto">
+      <p class="mb-4">Ноушен — это современная веб-платформа, предназначенная для удобного и интуитивно понятного создания и публикации постов. Наша цель — предоставить пользователям мощные инструменты для обмена знаниями, идеями и опытом в различных областях. Независимо от того, являетесь ли вы блогером, преподавателем или просто любителем делиться своими мыслями, Ноушен предлагает все необходимые функции для реализации ваших креативных идей.</p>
+      <div class="d-grid gap-2 d-sm-flex justify-content-sm-center">
+        <a href="{{ url_for('blog') }}" type="button" class="btn btn-primary px-4 gap-3">Смотреть посты</a>
+        <a href="{{ url_for('create_post') }}" type="button" class="btn btn-outline-secondary px-4">Написать свой пост</a>
+      </div>
+    </div>
+  </div>
+
+{% endblock %}

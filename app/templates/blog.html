@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+{% block title %}Новости{% endblock %}
+
+{% block content %}
+
+    <h3>Новости</h3><br>
+
+    <div class="d-grid gap-2">
+      <a href="{{ url_for('create_post') }}" class="btn btn-light" type="button">+ Создать пост</a>
+    </div><br>
+
+    {% include "base_posts.html" %}
+
+{% endblock %}

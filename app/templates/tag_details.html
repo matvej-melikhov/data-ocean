@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+
+
+{% block title %}О теге{% endblock %}
+
+
+{% block content %}
+
+    <h3>Посты по тегу <span class="badge text-bg-info">{{ tag.name }}</span></h3>
+    <br>
+    
+    {% include "base_posts.html" %}
+
+{% endblock %}

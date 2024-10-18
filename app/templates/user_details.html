@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+
+{% block title %}О пользователе{% endblock %}
+
+{% block content %}
+
+<h3>О пользователе</h3><br>
+
+    <div style="display: flex; gap: 20px;" class="wrapper">
+        <img style="border-radius: 10px; height: 150px;" src="{{ url_for('user_avatar', user_id=user.id) }}" alt="">
+
+        <ul style="width: 100%;" class="list-group">
+          <li class="list-group-item">Имя: {{ user.name }}</li>
+          <li class="list-group-item">Количество постов: {{ user.posts|list|length }}</li>
+          <li class="list-group-item">
+              Подписчики: {{ user.followers|length }}
+              {% if user in current_user.followed  %}
+                <a style="padding: 0px 7px; margin-left: 5px;" href="{{ url_for('unfollow', login=user.login) }}" class="btn btn-secondary">Отписаться</a>
+              {% else %}
+                <a style="padding: 0px 7px; margin-left: 5px;" style="padding: 5px;" href="{{ url_for('follow', login=user.login) }}" class="btn btn-danger">Подписаться</a>
+              {% endif %}
+          </li>
+        </ul>
+    </div>
+
+    <br>
+    <h4>Все посты пользователя</h4>
+    <br>
+
+    {% include "base_posts.html" %}
+
+{% endblock %}
