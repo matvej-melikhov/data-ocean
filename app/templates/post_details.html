@@ -9,18 +9,18 @@
 <div class="">
     <div class="d-grid gap-3" style="grid-template-columns: 1fr 2fr;">
         <div class="border rounded-3 p-3">
-            <h5 class="mb-2">Другие статьи</h5>
-            <p class="mb-3">Последние посты, написанные нашими экспертами.</p>
+            <h5 class="mb-2">{{ _('Другие посты') }}</h5>
+            <p class="mb-3">{{ _('Последние посты, написанные нашими экспертами') }}.</p>
             {% include "base_posts.html" %}
         </div>
         <div class="bg-body-tertiary border rounded-3 p-5">
-            <h3>{{  post.title }}</h3>
+            <h3>{{ post.title }}</h3>
             <p>{{ post_content|safe }}</p>
             <hr>
             <p><i>Автор: {{ post.author.name }} {{ post.author.last_name }}</i></p>
         </div>
     </div>
 </div>
-    
+
 
 {% endblock %}

@@ -1,5 +1,7 @@
 from flask import render_template, request, redirect, url_for, flash, abort, make_response
 from flask_login import login_user, logout_user, login_required, current_user
+from flask_babel import _
+
 import sqlite3
 import markdown
 
@@ -52,10 +54,10 @@ def login():
         user = User.query.filter_by(login=user_login).first()
         if user and user.password == user_password:
             login_user(user)
-            flash("Вы успешно авторизовались!")
+            flash(_('Вы успешно авторизовались!'))
             return redirect(next) if next else redirect("blog")
         else:
-            flash("Неверный логин или пароль!")
+            flash(_('Неверный логин или пароль!'))
             return redirect(url_for("login"))
 
     form = LoginForm()
@@ -64,7 +66,7 @@ def login():
 @application.route("/logout")
 def logout():
     logout_user()
-    flash("Вы вышли из аккаунта!")
+    flash(_('Вы вышли из аккаунта'))
     return redirect(url_for("index"))
 
 @application.route("/blog")
@@ -107,14 +109,14 @@ def create_post():
             new_post.tags = tags
             db.session.add(new_post)
             db.session.commit()
-            flash("Пост создан!")
+            flash(_('Пост создан!'))
             return redirect(url_for("blog"))
         else:
-            flash("Ошибка валидации!")
+            flash(_('Ошибка валидации!'))
 
     return render_template("create_post.html", form=form, tags=all_tags)
 
-@application.route("/<slug>")
+@application.route("/blog/<slug>")
 def post_details(slug):
     page = request.args.get("page")
     page = int(page) if page and page.isdigit() else 1
@@ -138,7 +140,7 @@ def edit_post(slug):
         form.populate_obj(post)
 
         db.session.commit()
-        flash("Пост изменен!")
+        flash(_('Пост изменен!'))
         return redirect(url_for("post_details", slug=post.slug))
 
     form = CreatePostForm(obj=post)
@@ -185,7 +187,7 @@ def profile():
 
         db.session.add(user)
         db.session.commit()
-        flash("Данные изменены")
+        flash(_('Данные изменены!'))
 
     page = request.args.get("page")
     page = int(page) if page and page.isdigit() else 1
@@ -199,14 +201,14 @@ def profile():
 def follow(login):
     user = User.query.filter_by(login=login).first()
     if not user:
-        flash("Пользователь не найден :(")
+        flash(_('Пользователь не найден :('))
         return redirect(url_for("index"))
     if current_user == user:
-        flash("Вы не можете подписаться на самого себя!")
+        flash(_('Вы не можете подписаться на самого себя!'))
         return redirect(url_for("user_details", user_id=user.id))
     current_user.follow(user)
     db.session.commit()
-    flash("Подписка оформлена!")
+    flash(_('Подписка оформлена!'))
     return redirect(url_for("user_details", user_id=user.id))
 
 @application.route("/unfollow/<login>")
@@ -214,14 +216,14 @@ def follow(login):
 def unfollow(login):
     user = User.query.filter_by(login=login).first()
     if not user:
-        flash("Пользователь не найден :(")
+        flash(_('Пользователь не найден :('))
         return redirect(url_for("index"))
     if current_user == user:
-        flash("Вы не можете отписаться от самого себя!")
+        flash(_('Вы не можете отписаться от самого себя!'))
         return redirect(url_for("user_details", user_id=user.id))
     current_user.unfollow(user)
     db.session.commit()
-    flash("Вы успешно отписались!")
+    flash(_('Вы успешно отписались от пользователя!'))
     return redirect(url_for("user_details", user_id=user.id))
 
 @application.route("/user_avatar/<int:user_id>")
@@ -234,3 +236,19 @@ def user_avatar(user_id):
     else:
         h = ""
     return h
+
+# Маршрут для установки языка
+@application.route('/set_language/<lang>')
+def set_language(lang=None):
+    if lang not in application.config['BABEL_SUPPORTED_LOCALES']:
+        lang = application.config['BABEL_DEFAULT_LOCALE']
+
+    response = make_response(redirect(request.referrer or url_for('index')))
+    response.set_cookie('lang', lang, max_age=30 * 24 * 60 * 60)  # Сохраняем язык в cookies на 30 дней
+    return response
+
+
+
+
+
+

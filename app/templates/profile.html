@@ -1,64 +1,64 @@
 {% extends "base.html" %}
 
-{% block title %}Профиль{% endblock %}
+{% block title %}{{ _('Профиль') }}{% endblock %}
 
 {% block content %}
 
-    <h3>Профиль</h3><br>
+<h3>{{ _('Профиль') }}</h3><br>
 
-    <div style="display: flex; gap: 30px; position: relative;" class="wrapper">
-        <div class="col-md-4">
-            <img style="border-radius: 10px;" src="{{ url_for('user_avatar', user_id=user.id) }}" width="100%" alt="">
-            {% if user.roles %}
-                <div class="status-wrapper" style="position: absolute; left: 10px; bottom: 10px; display: flex; gap: 10px;">
-                    {% for role in user.roles %}
-                            <div style="padding: 5px 10px; background: white; border-radius: 5px;" class="status">
-                                {{ role }}
-                            </div>
-                    {% endfor %}
-                </div>
-            {% endif %}
+<div style="display: flex; gap: 30px; position: relative;" class="wrapper">
+    <div class="col-md-4">
+        <img style="border-radius: 10px;" src="{{ url_for('user_avatar', user_id=user.id) }}" width="100%" alt="">
+        {% if user.roles %}
+        <div class="status-wrapper" style="position: absolute; left: 10px; bottom: 10px; display: flex; gap: 10px;">
+            {% for role in user.roles %}
+            <div style="padding: 5px 10px; background: white; border-radius: 5px;" class="status">
+                {{ role }}
+            </div>
+            {% endfor %}
         </div>
-
-        <form class="col-md-8" method="POST" action="" enctype="multipart/form-data">
-            <div style="margin-bottom: 10px" class="row form-row">
-                <div class="form-group col-md-12">
-                    {{ form.name.label() }}
-                    {{ form.name(class="form-control") }}
-                </div>
-            </div>
-
-            <div style="margin-bottom: 10px" class="row form-row">
-                <div class="form-group col-md-12">
-                    {{ form.last_name.label() }}
-                    {{ form.last_name(class="form-control") }}
-                </div>
-            </div>
-
-            <div style="margin-bottom: 20px" class="row form-row">
-                <div class="form-group col-md-6">
-                    {{ form.login.label() }}
-                    {{ form.login(class="form-control") }}
-                </div>
-                <div class="form-group col-md-6">
-                    {{ form.password.label() }}
-                    {{ form.password(class="form-control") }}
-                </div>
-            </div>
-
-            <div style="margin-bottom: 10px" class="custom-file">
-                {{ form.avatar(class="custom-file-input") }}
-            </div>
-
-            <button style="width: 100%; margin-top: 10px" type="submit" class="btn btn-success">Изменить</button>
-        </form>
-
+        {% endif %}
     </div>
 
-    <br>
-    <h4>Ваши посты</h4>
-    <br>
+    <form class="col-md-8" method="POST" action="" enctype="multipart/form-data">
+        <div style="margin-bottom: 10px" class="row form-row">
+            <div class="form-group col-md-12">
+                {{ form.name.label }}
+                {{ form.name(class="form-control") }}
+            </div>
+        </div>
 
-    {% include "base_posts.html" %}
+        <div style="margin-bottom: 10px" class="row form-row">
+            <div class="form-group col-md-12">
+                {{ form.last_name.label }}
+                {{ form.last_name(class="form-control") }}
+            </div>
+        </div>
+
+        <div style="margin-bottom: 20px" class="row form-row">
+            <div class="form-group col-md-6">
+                {{ form.login.label }}
+                {{ form.login(class="form-control") }}
+            </div>
+            <div class="form-group col-md-6">
+                {{ form.password.label }}
+                {{ form.password(class="form-control") }}
+            </div>
+        </div>
+
+        <div style="margin-bottom: 10px" class="custom-file">
+            {{ form.avatar(class="custom-file-input") }}
+        </div>
+
+        <button style="width: 100%; margin-top: 10px" type="submit" class="btn btn-success">{{ _('Изменить') }}</button>
+    </form>
+
+</div>
+
+<br>
+<h4>{{ _('Ваши посты') }}</h4>
+<br>
+
+{% include "base_posts.html" %}
 
 {% endblock %}

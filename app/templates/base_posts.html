@@ -4,15 +4,16 @@
         <div style="display: flex; gap: 10px;" class="card-header">
             <img style="border-radius: 10px;" src="{{ url_for('user_avatar', user_id=post.author.id) }}" width="50px" alt="">
             <div class="wrapper">
-                </img> Автор: <a href="{{ url_for('user_details', user_id=post.author.id) }}">{{ post.author.name }}</a><br>
-                Теги: {% for tag in post.tags %}<a href="{{ url_for('tag_details', slug=tag.slug) }}" class="badge text-bg-success">{{ tag.name }}</a> {% endfor %}
+                {{ _('Автор') }}: <a href="{{ url_for('user_details', user_id=post.author.id) }}">{{ post.author.name }}</a><br>
+                {{ _('Теги') }}: {% for tag in post.tags %}<a href="{{ url_for('tag_details', slug=tag.slug) }}" class="badge text-bg-success">{{ tag.name }}</a> {% endfor %}
             </div>
         </div>
         <div class="card-body">
-            <p class="card-title"><b>{{ post.title }}</b> <br> <p>{{ post.description }}</p></p>
-<!--            <p class="card-text">{{ post.content }}</p>-->
+            <p class="card-title"><b>{{ post.title }}</b> <br>
+            <p>{{ post.description }}</p>
+            </p>
             <div class="d-grid gap-2">
-                <a href="{{ url_for('post_details', slug=post.slug) }}" class="btn btn-outline-primary">Читать</a>
+                <a href="{{ url_for('post_details', slug=post.slug) }}" class="btn btn-outline-primary">{{ _('Читать') }}</a>
             </div>
         </div>
     </div>

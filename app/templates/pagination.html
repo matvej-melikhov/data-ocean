@@ -1,15 +1,15 @@
 <nav aria-label="...">
     <ul class="pagination">
         <li class="page-item {% if not pages.has_prev %}disabled{% endif %}">
-            <a href="?page={{ pages.prev_num }}" class="page-link">Назад</a>
+            <a href="?page={{ pages.prev_num }}" class="page-link">{{ _('Назад') }}</a>
         </li>
 
         {% for page in pages.iter_pages() %}
-            <li class="page-item {% if page == pages.page %}active{% endif %}"><a class="page-link" href="?page={{ page }}">{{ page }}</a></li>
+        <li class="page-item {% if page == pages.page %}active{% endif %}"><a class="page-link" href="?page={{ page }}">{{ page }}</a></li>
         {% endfor %}
 
         <li class="page-item {% if not pages.has_next %}disabled{% endif %}">
-            <a class="page-link" href="?page={{ pages.next_num }}">Вперед</a>
+            <a class="page-link" href="?page={{ pages.next_num }}">{{ _('Вперед') }}</a>
         </li>
     </ul>
 </nav>
