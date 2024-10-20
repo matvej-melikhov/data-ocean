@@ -57,16 +57,19 @@
                 </div>
             </form>
 
-            <div class="flex-shrink-0 dropdown">
-              <a href="#" class="d-block link-body-emphasis text-decoration-none dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-                <img style="border-radius: 100px;" src="{{ url_for('user_avatar', user_id=current_user.id) }}" width="32px" alt="">
-              </a>
-              <ul class="dropdown-menu text-small shadow" style="">
-                <li><a class="dropdown-item" href="{{ url_for('profile') }}">Профиль</a></li>
-                <li><hr class="dropdown-divider"></li>
-                <li><a class="dropdown-item" href="{{ url_for('logout') }}">Выйти из аккаунта</a></li>
-              </ul>
-            </div>
+            {% if not current_user.is_anonymous %}
+              current_user
+                <div class="flex-shrink-0 dropdown">
+                    <a href="#" class="d-block link-body-emphasis text-decoration-none dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                        <img style="border-radius: 100px;" src="{{ url_for('user_avatar', user_id=current_user.id) }}" width="32px" alt="">
+                    </a>
+                    <ul class="dropdown-menu text-small shadow" style="">
+                        <li><a class="dropdown-item" href="{{ url_for('profile') }}">Профиль</a></li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li><a class="dropdown-item" href="{{ url_for('logout') }}">Выйти из аккаунта</a></li>
+                    </ul>
+                </div>
+            {% endif %}
           </div>
         </div>
     </header>

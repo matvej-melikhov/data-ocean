@@ -7,6 +7,12 @@ from app import application
 from app.forms import *
 from app.models import *
 
+
+@application.errorhandler(401)
+def unauthorized(error):
+    return redirect(url_for('login'))
+
+
 @application.route("/")
 def index():
     return render_template("index.html")
