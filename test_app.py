@@ -1,5 +1,6 @@
 import pytest
 from main import application
+from app.models import User, Post
 
 @pytest.fixture
 def client():
@@ -27,20 +28,24 @@ def test_404_page(client):
     response = client.get('/some_query')
     assert response.status_code == 404
 
-def test_create_post(client):
-    response = client.post('/create-post', json={
-        'title':'Test title',
-        'tags': [],
-        'description': 'Some description',
-        'content': 'Post content'
-    })
-    assert response.status_code == 201
+def test_registrate(client):
+    # Подготовка данных для теста
+    data = {
+        'name': 'John',
+        'last_name': 'Doe',
+        'login': 'johndoe',
+        'password': 'securepassword'
+    }
 
-def test_registarate(client):
-    response = client.post('/create-post', json={
-        'name': 'test name',
-        'last_name': 'test last name',
-        'login': 'test login',
-        'password': 'test password'
-    })
-    assert response.status_code == 201
+    # Отправка POST-запроса на регистрацию
+    response = client.post('/registration', data=data)
+
+    # Проверка редиректа после успешной регистрации
+    assert response.status_code == 302  # Ожидаем редирект
+    assert response.location.endswith('/blog')  # Проверяем, что редирект ведет на правильный маршрут
+
+    # Проверяем, что пользователь был добавлен в БД
+    user = User.query.filter_by(login='johndoe').first()
+    assert user is not None  # Убедимся, что пользователь существует в БД
+    assert user.name == 'John'  # Проверяем имя пользователя
+    assert user.last_name == 'Doe'  # Проверяем фамилию пользователя

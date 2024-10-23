@@ -37,9 +37,13 @@ def registration():
         last_name = request.form.get("last_name")
         login = request.form.get("login")
         password = request.form.get("password")
-        avatar = request.files.get("avatar").read()
 
-        user = User(name=name, last_name=last_name, login=login, password=password, avatar=sqlite3.Binary(avatar))
+        if request.files.get("avatar"): # если файл был загружен
+            avatar = sqlite3.Binary(request.files.get("avatar").read())
+        else:
+            avatar = None
+
+        user = User(name=name, last_name=last_name, login=login, password=password, avatar=avatar)
         db.session.add(user)
         db.session.commit()
         login_user(user)
@@ -262,6 +266,26 @@ def toggle_theme():
     response = make_response(jsonify({'theme': new_theme}))
     response.set_cookie('theme', new_theme, max_age=30 * 24 * 60 * 60)  # Устанавливаем cookie с новой темой
     return response
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

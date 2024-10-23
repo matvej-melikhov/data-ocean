@@ -6,7 +6,7 @@ class RegForm(Form):
     name = StringField(_l('Имя'))
     last_name = StringField(_l('Фамилия'))
     login = StringField(_l('Логин'))
-    password = StringField(_l('Пароль'))
+    password = PasswordField(_l('Пароль'))
     avatar = FileField()
 
 class LoginForm(Form):
