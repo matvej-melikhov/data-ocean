@@ -1,4 +1,4 @@
-from flask import render_template, request, redirect, url_for, flash, abort, make_response
+from flask import render_template, request, redirect, url_for, flash, abort, make_response, g, jsonify
 from flask_login import login_user, logout_user, login_required, current_user
 from flask_babel import _
 
@@ -8,6 +8,12 @@ import markdown
 from app import application
 from app.forms import *
 from app.models import *
+
+
+# для загрузки темы в каждом маршруте
+@application.before_request
+def load_theme():
+    g.theme = request.cookies.get('theme') or 'light'  # По умолчанию светлая тема
 
 
 @application.errorhandler(401)
@@ -247,6 +253,15 @@ def set_language(lang=None):
     response.set_cookie('lang', lang, max_age=30 * 24 * 60 * 60)  # Сохраняем язык в cookies на 30 дней
     return response
 
+# установка темы приложения
+@application.route('/toggle_theme', methods=['POST'])
+def toggle_theme():
+    print('Post запрос получен!')
+    current_theme = request.cookies.get('theme')
+    new_theme = 'dark' if current_theme == 'light' else 'light'
+    response = make_response(jsonify({'theme': new_theme}))
+    response.set_cookie('theme', new_theme, max_age=30 * 24 * 60 * 60)  # Устанавливаем cookie с новой темой
+    return response
 
 
 

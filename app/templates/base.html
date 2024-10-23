@@ -1,5 +1,7 @@
 <!doctype html>
-<html lang="en">
+
+<html lang="ru" data-bs-theme="{{ g.theme }}">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport"
@@ -11,6 +13,7 @@
     <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.3.1/styles/default.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.3.1/highlight.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <link rel="stylesheet" href="{{ url_for('index') }}static/css/main.css">
     <title>{% block title %}{% endblock %}</title>
 </head>
@@ -69,6 +72,8 @@
                         <li><hr class="dropdown-divider"></li>
                         <li><a class="dropdown-item" href="{{ url_for('set_language', lang='ru') }}">{{ _('Русский') }}</a></li>
                         <li><a class="dropdown-item" href="{{ url_for('set_language', lang='en') }}">{{ _('Английский') }}</a></li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li><a class="dropdown-item" href='#' id="toggle-theme">{{ _('Переключить тему') }}</a></li>
                     </ul>
                 </div>
             {% else %}
@@ -78,6 +83,8 @@
                     <ul class="dropdown-menu text-small shadow" style="">
                         <li><a class="dropdown-item" href="{{ url_for('set_language', lang='ru') }}">{{ _('Русский') }}</a></li>
                         <li><a class="dropdown-item" href="{{ url_for('set_language', lang='en') }}">{{ _('Английский') }}</a></li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li><a class="dropdown-item" href='#' id="toggle-theme">{{ _('Переключить тему') }}</a></li>
                     </ul>
                 </div>
             {% endif %}
@@ -95,5 +102,22 @@
 
         {% block content %}{% endblock %}
     </div>
+
+<!-- ajax-запрос -->
+<script>
+    $(document).ready(function() {
+        $('#toggle-theme').click(function() {
+            $.ajax({
+                url: '/toggle_theme',
+                method: 'POST',
+                success: function(data) {
+                    // Удаляем атрибут data-bs-theme и добавляем новый
+                    $('html').removeAttr('data-bs-theme').attr('data-bs-theme', data.theme);
+                    console.log('Запрос выполнен ajax');
+                }
+            });
+        });
+    });
+</script>
 </body>
 </html>
