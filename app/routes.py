@@ -260,7 +260,6 @@ def set_language(lang=None):
 # установка темы приложения
 @application.route('/toggle_theme', methods=['POST'])
 def toggle_theme():
-    print('Post запрос получен!')
     current_theme = request.cookies.get('theme')
     new_theme = 'dark' if current_theme == 'light' else 'light'
     response = make_response(jsonify({'theme': new_theme}))

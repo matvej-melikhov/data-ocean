@@ -22,8 +22,6 @@ class MyAdminIndexView(AdminMixin, AdminIndexView):
 
 class MyModelView(AdminMixin, ModelView):
     column_display_pk = True
-    edit_modal = True
-    create_modal = True
 
 
 class PostView(MyModelView):
