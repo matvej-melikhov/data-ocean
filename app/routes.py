@@ -1,3 +1,5 @@
+from urllib.parse import urlparse
+
 from flask import render_template, request, redirect, url_for, flash, abort, make_response, g, jsonify
 from flask_login import login_user, logout_user, login_required, current_user
 from flask_babel import _
@@ -37,9 +39,11 @@ def registration():
         last_name = request.form.get("last_name")
         login = request.form.get("login")
         password = request.form.get("password")
-        avatar = request.files.get("avatar").read()
+        avatar_file = request.files.get("avatar")
+        avatar = sqlite3.Binary(avatar_file.read()) if avatar_file and avatar_file.filename else None
 
-        user = User(name=name, last_name=last_name, login=login, password=password, avatar=sqlite3.Binary(avatar))
+        user = User(name=name, last_name=last_name, login=login, avatar=avatar)
+        user.set_password(password)
         db.session.add(user)
         db.session.commit()
         login_user(user)
@@ -58,10 +62,11 @@ def login():
         user_login = request.form.get("login")
         user_password = request.form.get("password")
         user = User.query.filter_by(login=user_login).first()
-        if user and user.password == user_password:
+        if user and user.check_password(user_password):
             login_user(user)
             flash(_('Вы успешно авторизовались!'))
-            return redirect(next) if next else redirect("blog")
+            safe_next = next if next and urlparse(next).netloc == '' else None
+            return redirect(safe_next) if safe_next else redirect(url_for("blog"))
         else:
             flash(_('Неверный логин или пароль!'))
             return redirect(url_for("login"))
@@ -188,8 +193,11 @@ def profile():
         user.name = form.name.data
         user.last_name = form.last_name.data
         user.login = form.login.data
-        user.password = form.password.data
-        user.avatar = sqlite3.Binary(request.files.get("avatar").read()) if request.files.get("avatar") else user.avatar
+        if form.password.data:
+            user.set_password(form.password.data)
+        avatar_file = request.files.get("avatar")
+        if avatar_file and avatar_file.filename:
+            user.avatar = sqlite3.Binary(avatar_file.read())
 
         db.session.add(user)
         db.session.commit()

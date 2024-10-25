@@ -1,7 +1,12 @@
+import os
+from dotenv import load_dotenv
+
+load_dotenv()
+
 class Configuration():
-    SECRET_KEY = "A0Zr98j/3yX R~XHH!jmN]LWX/,?RT"
+    SECRET_KEY = os.environ.get("SECRET_KEY", "change-me")
     SQLALCHEMY_DATABASE_URI = "sqlite:///base.db"
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     JSON_AS_ASCII = False
-    BABEL_DEFAULT_LOCALE = 'ru'
+    BABEL_DEFAULT_LOCALE = 'en'
     BABEL_SUPPORTED_LOCALES = ['ru', 'en']

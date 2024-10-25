@@ -1,4 +1,5 @@
 from flask_login import UserMixin, current_user
+from werkzeug.security import generate_password_hash, check_password_hash
 from app import db, login_manager
 
 
@@ -41,6 +42,12 @@ class User(UserMixin, db.Model):
        secondaryjoin=(followers_followed.c.followed_id == id),
        backref=db.backref("followers")
     )
+
+    def set_password(self, raw_password):
+        self.password = generate_password_hash(raw_password)
+
+    def check_password(self, raw_password):
+        return check_password_hash(self.password, raw_password)
 
     def is_admin(self):
         roles_names = [role.name.lower() for role in self.roles]
