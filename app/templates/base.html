@@ -124,6 +124,7 @@
                 success: function(data) {
                     // Удаляем атрибут data-bs-theme и добавляем новый
                     $('html').removeAttr('data-bs-theme').attr('data-bs-theme', data.theme);
+                    console.log('Запрос выполнен ajax');
                 }
             });
         });
@@ -131,15 +132,3 @@
 </script>
 </body>
 </html>
-
-
-
-
-
-
-
-
-
-
-
-
