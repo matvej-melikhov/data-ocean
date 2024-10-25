@@ -94,7 +94,7 @@ def blog():
 @application.route("/search")
 @login_required
 def search():
-    s = request.args.get('s')
+    s = request.args.get('s', '')
 
     page = request.args.get("page")
     page = int(page) if page and page.isdigit() else 1
@@ -136,7 +136,8 @@ def post_details(slug):
     pages = posts.paginate(page=page, per_page=5)
 
     post = Post.query.filter_by(slug=slug).first()
-    # Конвертируем Markdown в HTML
+    if not post:
+        abort(404)
     post_content = markdown.markdown(post.content, extensions=['fenced_code', 'codehilite', 'tables'])
 
     return render_template("post_details.html", post=post, post_content=post_content, pages=pages)
@@ -163,6 +164,8 @@ def user_details(user_id):
     page = int(page) if page and page.isdigit() else 1
 
     user = User.query.filter_by(id=user_id).first()
+    if not user:
+        abort(404)
     posts = user.posts
     pages = posts.paginate(page=page, per_page=2)
 
@@ -243,12 +246,10 @@ def unfollow(login):
 @application.route("/user_avatar/<int:user_id>")
 def user_avatar(user_id):
     user = User.query.get(user_id)
-    if user.avatar:
-        user_avatar = user.avatar
-        h = make_response(user_avatar)
-        h.headers["Content-Type"] = "image/png"
-    else:
-        h = ""
+    if not user or not user.avatar:
+        abort(404)
+    h = make_response(user.avatar)
+    h.headers["Content-Type"] = "image/png"
     return h
 
 # Маршрут для установки языка
