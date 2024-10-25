@@ -4,12 +4,12 @@ from app import db, login_manager
 
 
 def generate_slug(title):
-    slug = title
-    for i in [",", ".", "!", "?", ";", ":"]:
-        slug = slug.replace(i, "-")
+    slug = title.lower().replace(" ", "-")
+    for ch in [",", ".", "!", "?", ";", ":"]:
+        slug = slug.replace(ch, "-")
     while "--" in slug:
         slug = slug.replace("--", "-")
-    return slug
+    return slug.strip("-")
 
 @login_manager.user_loader
 def load_user(id):

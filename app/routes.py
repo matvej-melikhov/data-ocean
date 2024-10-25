@@ -150,6 +150,7 @@ def edit_post(slug):
     if request.method == "POST":
         form = CreatePostForm(formdata=request.form, obj=post)
         form.populate_obj(post)
+        post.slug = generate_slug(post.title)
 
         db.session.commit()
         flash(_('Пост изменен!'))
