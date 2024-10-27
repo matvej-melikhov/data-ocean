@@ -4,8 +4,31 @@ from flask import render_template, request, redirect, url_for, flash, abort, mak
 from flask_login import login_user, logout_user, login_required, current_user
 from flask_babel import _
 
+import re
 import sqlite3
 import markdown
+
+
+def render_markdown(text):
+    """Markdown → HTML с защитой LaTeX-блоков от парсера."""
+    blocks = []
+
+    def protect(m):
+        blocks.append(m.group(0))
+        return f'\x00MATH{len(blocks) - 1}\x00'
+
+    # Сначала защищаем блочные $$ ... $$
+    text = re.sub(r'\$\$[\s\S]+?\$\$', protect, text)
+    # Затем инлайн $ ... $ (не $$)
+    text = re.sub(r'(?<!\$)\$(?!\$).+?(?<!\$)\$(?!\$)', protect, text)
+
+    html = markdown.markdown(text, extensions=['fenced_code', 'codehilite', 'tables'])
+
+    # Восстанавливаем LaTeX
+    for i, block in enumerate(blocks):
+        html = html.replace(f'\x00MATH{i}\x00', block)
+
+    return html
 
 from app import application
 from app.forms import *
@@ -146,7 +169,7 @@ def post_details(slug):
     post = Post.query.filter_by(slug=slug).first()
     if not post:
         abort(404)
-    post_content = markdown.markdown(post.content, extensions=['fenced_code', 'codehilite', 'tables'])
+    post_content = render_markdown(post.content)
 
     return render_template("post_details.html", post=post, post_content=post_content, pages=pages)
 
