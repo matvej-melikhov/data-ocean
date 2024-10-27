@@ -1,30 +1,41 @@
 {% extends "base.html" %}
-
 {% block title %}{{ _('Новый пост') }}{% endblock %}
-
 {% block content %}
+<div class="post-form-wrap">
+    <form method="POST" action="">
+        {{ form.hidden_tag() }}
+        <div class="post-form-toolbar">
+            <span>{{ _('Новая запись') }}</span>
+            <div style="display:flex;gap:8px">
+                <a class="btn-ghost btn-sm" href="{{ url_for('blog') }}">{{ _('Отмена') }}</a>
+                <button class="btn-solid btn-sm" type="submit">{{ _('Опубликовать') }}</button>
+            </div>
+        </div>
+        <div class="post-form-body">
+            {{ form.title(class="pf-title", placeholder=_('Заголовок…')) }}
 
-<h3>{{ _('Новый пост') }}</h3><br>
+            {% if tags %}
+            <div class="f-group">
+                <label class="f-label">{{ _('Теги') }}</label>
+                <div class="tags-pick">
+                    {% for tag in tags %}
+                    <input class="tp-cb" type="checkbox" name="tag" id="tg{{ loop.index }}" value="{{ tag }}">
+                    <label class="tp-lb" for="tg{{ loop.index }}">{{ tag }}</label>
+                    {% endfor %}
+                </div>
+            </div>
+            {% endif %}
 
-<form action="" method="POST">
-    <div class="mb-3">
-        {{ form.title.label(class="form-label") }}
-        {{ form.title(class="form-control") }}
-    </div>
-    <div class="mb-3">
-        {% for tag in tags %}
-        <input name="tag" type="checkbox" class="custom-control-input" id="check{{tags.index(tag)}}" value="{{ tag }}">
-        <label style="margin-right: 10px" class="custom-control-label" for="check{{tags.index(tag)}}">{{ tag }}</label>
-        {% endfor %}
-    </div>
-    <div class="mb-3">
-        {{ form.description.label(class="form-label") }}
-        {{ form.description(class="form-control") }}
-    </div>
-    <div class="mb-3">
-        {{ form.content.label(class="form-label") }}
-        {{ form.content(class="form-control") }}
-    </div>
-    <button class="btn btn-success" type="submit">{{ _('Создать') }}</button>
-</form>
+            <div class="f-group">
+                <label class="f-label">{{ form.description.label.text }}</label>
+                {{ form.description(class="f-inp", rows=2, placeholder=_('Краткое описание — одна-две фразы')) }}
+            </div>
+
+            <div class="f-group">
+                <label class="f-label">{{ form.content.label.text }} · Markdown + LaTeX</label>
+                {{ form.content(class="f-inp pf-content", rows=16, placeholder=_('Начните писать… Формулы: $E=mc^2$ или $$\\int_a^b f(x)dx$$')) }}
+            </div>
+        </div>
+    </form>
+</div>
 {% endblock %}

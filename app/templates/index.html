@@ -1,23 +1,60 @@
 {% extends "base.html" %}
-
 {% block title %}{{ _('Главная') }}{% endblock %}
-
 {% block content %}
 
-<div class="container col-10 px-4 py-5">
-    <div class="row flex-lg-row-reverse align-items-center g-5 py-5">
-        <div class="col-12">
-            <h1 class="display-5 fw-bold text-body-emphasis lh-1 mb-4">
-                <img width="200px" src="{{ url_for('index') }}static/img/notion.svg" alt="">
-            </h1>
-            <p class="d-block mb-4">
-                {{ _('Ноушен — это современная веб-платформа, предназначенная для удобного и интуитивно понятного создания и публикации постов. Наша цель — предоставить пользователям мощные инструменты для обмена знаниями, идеями и опытом в различных областях. Независимо от того, являетесь ли вы блогером, преподавателем или просто любителем делиться своими мыслями, Ноушен предлагает все необходимые функции для реализации ваших креативных идей.') }}
-            </p>
-            <div class="d-grid gap-2 d-md-flex justify-content-md-start">
-                <a href="{{ url_for('blog') }}" type="button" class="btn btn-primary px-4 gap-3">{{ _('Смотреть посты') }}</a>
-                <a href="{{ url_for('create_post') }}" type="button" class="btn btn-outline-secondary px-4">{{ _('Написать свой пост') }}</a>
-            </div>
+<div class="hero">
+    <div class="hero-left">
+        <div class="hero-eyebrow">
+            <span class="hero-dot"></span>
+            {{ _('Платформа для публикаций') }}
         </div>
+        <h1 class="hero-h1">{{ _('Пишите то,') }}<br>{{ _('что стоит') }} <em>{{ _('читать.') }}</em></h1>
+        <p class="hero-sub">{{ _('Место для статей, заметок и идей. Минимум лишнего — максимум смысла.') }}</p>
+        <div class="hero-cta">
+            <a class="btn-solid" href="{{ url_for('blog') }}">
+                {{ _('Читать посты') }}
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            </a>
+            <a class="btn-ghost" href="{{ url_for('create_post') }}">{{ _('Написать пост') }}</a>
+        </div>
+    </div>
+
+    {% if latest %}
+    <div class="hero-card">
+        <div class="hc-head">
+            <div class="hc-eyebrow">{{ _('Последняя публикация') }}</div>
+            <div class="hc-title">{{ latest.title }}</div>
+            {% if latest.description %}
+            <div class="hc-desc">{{ latest.description }}</div>
+            {% endif %}
+        </div>
+        <div class="hc-foot">
+            <div class="hc-av" style="background:linear-gradient(135deg,#60A5FA,#2563EB)">
+                <img src="{{ url_for('user_avatar', user_id=latest.author.id) }}"
+                     alt="" onerror="this.style.display='none'">
+                <span>{{ latest.author.name[0] if latest.author.name else '?' }}</span>
+            </div>
+            <span class="hc-name">{{ latest.author.name }} {{ latest.author.last_name }}</span>
+            {% if latest.tags %}
+            <span class="hc-tag">{{ latest.tags[0].name }}</span>
+            {% endif %}
+        </div>
+    </div>
+    {% endif %}
+</div>
+
+<div class="stats-bar">
+    <div class="stat-cell">
+        <div class="stat-n"><em>{{ post_count }}</em></div>
+        <div class="stat-l">{{ _('публикаций') }}</div>
+    </div>
+    <div class="stat-cell">
+        <div class="stat-n">{{ user_count }}</div>
+        <div class="stat-l">{{ _('авторов') }}</div>
+    </div>
+    <div class="stat-cell">
+        <div class="stat-n">{{ tag_count }}</div>
+        <div class="stat-l">{{ _('тегов') }}</div>
     </div>
 </div>
 

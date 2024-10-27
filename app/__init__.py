@@ -25,6 +25,3 @@ def get_locale():
 babel = Babel(application, locale_selector=get_locale)
 
 
-
-
-

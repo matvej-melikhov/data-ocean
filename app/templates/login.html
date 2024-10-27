@@ -1,20 +1,26 @@
 {% extends "base.html" %}
-
-{% block title %}Вход{% endblock %}
-
+{% block title %}{{ _('Вход') }}{% endblock %}
 {% block content %}
-
-<h3>{{ _('Вход') }}</h3><br>
-
-<form action="" method="POST">
-    {% for field in form %}
-    <div class="mb-3">
-        {{ field.label(class="form-label") }}
-        {{ field(class="form-control") }}
+<div class="auth-wrap">
+    <div class="auth-box">
+        <div class="auth-logo">
+            <img src="{{ url_for('static', filename='img/logo.svg') }}" alt="">
+            DataOcean
+        </div>
+        <h1 class="auth-title">{{ _('Войдите в аккаунт') }}</h1>
+        <form method="POST" action="">
+            {{ form.hidden_tag() }}
+            {% for field in form %}{% if field.widget.input_type != 'hidden' %}
+            <div class="f-group">
+                <label class="f-label">{{ field.label.text }}</label>
+                {{ field(class="f-inp") }}
+            </div>
+            {% endif %}{% endfor %}
+            <div class="f-actions">
+                <button class="btn-solid" type="submit" style="width:100%;justify-content:center">{{ _('Войти') }}</button>
+            </div>
+        </form>
+        <p class="auth-footer">{{ _('Нет аккаунта?') }} <a href="{{ url_for('registration') }}">{{ _('Зарегистрироваться') }}</a></p>
     </div>
-    {% endfor %}
-    <button class="btn btn-success" type="submit">{{ _('Войти') }}</button>
-</form>
-<br>
-<p>{{ _('Еще нет аккаунта?') }} <a href="{{ url_for('registration') }}">{{ _('Регистрация') }}</a></p>
+</div>
 {% endblock %}

@@ -1,32 +1,51 @@
 {% extends "base.html" %}
-
-{% block title %}{{ _('Информация о пользователе') }}{% endblock %}
-
+{% block title %}{{ user.name }} {{ user.last_name }}{% endblock %}
 {% block content %}
+<div class="profile-layout">
+    <div>
+        <div class="profile-av-box">
+            <img src="{{ url_for('user_avatar', user_id=user.id) }}"
+                 alt="{{ user.name }}"
+                 onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+            <div class="profile-av-init" style="display:none">{{ user.name[0] if user.name else '?' }}</div>
+        </div>
+        {% if user.roles %}
+        <div class="profile-roles">
+            {% for role in user.roles %}<span class="role-chip">{{ role }}</span>{% endfor %}
+        </div>
+        {% endif %}
+    </div>
 
-<h3>{{ _('О пользователе') }}</h3><br>
-
-<div style="display: flex; gap: 20px;" class="wrapper">
-    <img style="border-radius: 10px; height: 150px;" src="{{ url_for('user_avatar', user_id=user.id) }}" alt="">
-
-    <ul style="width: 100%;" class="list-group">
-        <li class="list-group-item">{{ _('Имя') }}: {{ user.name }}</li>
-        <li class="list-group-item">{{ _('Количество постов') }}: {{ user.posts|list|length }}</li>
-        <li class="list-group-item">
-            {{ _('Подписчики') }}: {{ user.followers|length }}
-            {% if user in current_user.followed  %}
-            <a style="padding: 0px 7px; margin-left: 5px;" href="{{ url_for('unfollow', login=user.login) }}" class="btn btn-secondary">{{ _('Отписаться') }}</a>
-            {% else %}
-            <a style="padding: 0px 7px; margin-left: 5px;" style="padding: 5px;" href="{{ url_for('follow', login=user.login) }}" class="btn btn-danger">{{ _('Подписаться') }}</a>
-            {% endif %}
-        </li>
-    </ul>
+    <div>
+        <p class="profile-name">{{ user.name }} {{ user.last_name }}</p>
+        <div class="stat-block">
+            <div class="stat-row">
+                <span class="stat-lbl">{{ _('Постов') }}</span>
+                <span class="stat-val">{{ user.posts | list | length }}</span>
+            </div>
+            <div class="stat-row">
+                <span class="stat-lbl">{{ _('Подписчики') }}</span>
+                <span class="stat-val">
+                    {{ user.followers | length }}
+                    {% if not current_user.is_anonymous and current_user != user %}
+                        {% if user in current_user.followed %}
+                        <a class="btn-sub btn-unsub" href="{{ url_for('unfollow', login=user.login) }}">{{ _('Отписаться') }}</a>
+                        {% else %}
+                        <a class="btn-sub btn-dosub" href="{{ url_for('follow', login=user.login) }}">{{ _('Подписаться') }}</a>
+                        {% endif %}
+                    {% endif %}
+                </span>
+            </div>
+            <div class="stat-row">
+                <span class="stat-lbl">{{ _('Подписки') }}</span>
+                <span class="stat-val">{{ user.followed | length }}</span>
+            </div>
+        </div>
+    </div>
 </div>
 
-<br>
-<h4>{{ _('Все посты пользователя') }}</h4>
-<br>
-
+<div class="sec-head">
+    <span class="sec-label">{{ _('Посты') }}</span>
+</div>
 {% include "base_posts.html" %}
-
 {% endblock %}

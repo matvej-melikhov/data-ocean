@@ -25,7 +25,15 @@ def unauthorized(error):
 
 @application.route("/")
 def index():
-    return render_template("index.html")
+    post_count = Post.query.count()
+    user_count = User.query.count()
+    tag_count  = Tag.query.count()
+    latest     = Post.query.order_by(-Post.id).first()
+    return render_template("index.html",
+                           post_count=post_count,
+                           user_count=user_count,
+                           tag_count=tag_count,
+                           latest=latest)
 
 @application.route("/registration", methods=["GET", "POST"])
 def registration():

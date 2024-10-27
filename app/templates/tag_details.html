@@ -1,14 +1,8 @@
 {% extends "base.html" %}
-
-
-{% block title %}{{ _('Посты по тегу') }}{% endblock %}
-
-
+{% block title %}{{ tag.name }}{% endblock %}
 {% block content %}
-
-<h3>{{ _('Посты по тегу') }} <span class="badge text-bg-info">{{ tag.name }}</span></h3>
-<br>
-
+<div class="sec-head">
+    <span class="sec-label">{{ _('Тег') }}: {{ tag.name }}</span>
+</div>
 {% include "base_posts.html" %}
-
 {% endblock %}

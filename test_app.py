@@ -1,48 +1,50 @@
 import pytest
-from main import application
+import uuid
+
+
+@pytest.fixture(scope='session')
+def app():
+    import main  # регистрирует routes, admin_views, models
+    from app import application, db
+    application.config['TESTING'] = True
+    application.config['WTF_CSRF_ENABLED'] = False
+    application.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///:memory:'
+    with application.app_context():
+        db.create_all()
+    return application
 
 
 @pytest.fixture
-def client():
-    application.testing = True
-    application.config['WTF_CSRF_ENABLED'] = False
-    with application.test_client() as client:
-        yield client
+def client(app):
+    with app.test_client() as c:
+        yield c
 
 
 def test_home_page(client):
-    response = client.get('/')
-    assert response.status_code == 200
+    assert client.get('/').status_code == 200
 
 def test_registration_page(client):
-    response = client.get('/registration')
-    assert response.status_code == 200
+    assert client.get('/registration').status_code == 200
 
 def test_login_page(client):
-    response = client.get('/login')
-    assert response.status_code == 200
+    assert client.get('/login').status_code == 200
 
 def test_profile_redirects_when_not_logged_in(client):
-    response = client.get('/profile')
-    assert response.status_code == 302
+    assert client.get('/profile').status_code == 302
 
 def test_blog_redirects_when_not_logged_in(client):
-    response = client.get('/blog')
-    assert response.status_code == 302
+    assert client.get('/blog').status_code == 302
 
 def test_404_page(client):
-    response = client.get('/nonexistent-page-that-does-not-exist')
-    assert response.status_code == 404
+    assert client.get('/nonexistent-page-xyz-123').status_code == 404
 
 def test_create_post_redirects_when_not_logged_in(client):
-    response = client.get('/create-post')
-    assert response.status_code == 302
+    assert client.get('/create-post').status_code == 302
 
 def test_registration_post(client):
-    response = client.post('/registration', data={
-        'name': 'Test',
-        'last_name': 'User',
-        'login': 'testuser_unique_123',
-        'password': 'testpassword',
+    login = f'testuser_{uuid.uuid4().hex[:8]}'
+    r = client.post('/registration', data={
+        'name': 'Test', 'last_name': 'User',
+        'login': login, 'password': 'testpassword',
     })
-    assert response.status_code in (200, 302)
+    assert r.status_code in (200, 302)

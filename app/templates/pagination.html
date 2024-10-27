@@ -1,15 +1,16 @@
-<nav aria-label="...">
-    <ul class="pagination">
-        <li class="page-item {% if not pages.has_prev %}disabled{% endif %}">
-            <a href="?page={{ pages.prev_num }}" class="page-link">{{ _('Назад') }}</a>
-        </li>
-
-        {% for page in pages.iter_pages() %}
-        <li class="page-item {% if page == pages.page %}active{% endif %}"><a class="page-link" href="?page={{ page }}">{{ page }}</a></li>
-        {% endfor %}
-
-        <li class="page-item {% if not pages.has_next %}disabled{% endif %}">
-            <a class="page-link" href="?page={{ pages.next_num }}">{{ _('Вперед') }}</a>
-        </li>
-    </ul>
-</nav>
+{% if pages.pages > 1 %}
+<div class="pager">
+    <a class="pager-btn {% if not pages.has_prev %}is-disabled{% endif %}"
+       href="?page={{ pages.prev_num }}{% if request.args.get('s') %}&s={{ request.args.get('s') }}{% endif %}">←</a>
+    {% for p in pages.iter_pages() %}
+        {% if p %}
+        <a class="pager-btn {% if p == pages.page %}is-active{% endif %}"
+           href="?page={{ p }}{% if request.args.get('s') %}&s={{ request.args.get('s') }}{% endif %}">{{ p }}</a>
+        {% else %}
+        <span class="pager-btn is-disabled">…</span>
+        {% endif %}
+    {% endfor %}
+    <a class="pager-btn {% if not pages.has_next %}is-disabled{% endif %}"
+       href="?page={{ pages.next_num }}{% if request.args.get('s') %}&s={{ request.args.get('s') }}{% endif %}">→</a>
+</div>
+{% endif %}

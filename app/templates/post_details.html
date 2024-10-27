@@ -1,26 +1,52 @@
 {% extends "base.html" %}
-
-
-{% block title %}{% endblock %}
-
-
+{% block title %}{{ post.title }}{% endblock %}
 {% block content %}
+<div class="article-layout">
 
-<div class="">
-    <div class="d-grid gap-3" style="grid-template-columns: 1fr 2fr;">
-        <div class="border rounded-3 p-3">
-            <h5 class="mb-2">{{ _('Другие посты') }}</h5>
-            <p class="mb-3">{{ _('Последние посты, написанные нашими экспертами') }}.</p>
-            {% include "base_posts.html" %}
+    <aside class="article-sidebar">
+        <div class="sidebar-label">{{ _('Другие посты') }}</div>
+        <div class="post-list-compact">
+            {% for p in pages.items %}
+            {% if p.id != post.id %}
+            <div class="plc-item" onclick="location.href='{{ url_for('post_details', slug=p.slug) }}'">
+                <div class="plc-title">{{ p.title }}</div>
+                <div class="plc-meta">{{ p.author.name }} {{ p.author.last_name }}</div>
+            </div>
+            {% endif %}
+            {% else %}
+            <div style="font-size:13px;color:var(--subtle);padding:12px 0">{{ _('Нет других постов') }}</div>
+            {% endfor %}
         </div>
-        <div class="bg-body-tertiary border rounded-3 p-5">
-            <h3>{{ post.title }}</h3>
-            <p>{{ post_content|safe }}</p>
-            <hr>
-            <p><i>Автор: {{ post.author.name }} {{ post.author.last_name }}</i></p>
+    </aside>
+
+    <article class="article-main">
+        <h1 class="article-title">{{ post.title }}</h1>
+
+        <div class="article-meta-row">
+            <div class="article-meta-av">
+                <img src="{{ url_for('user_avatar', user_id=post.author.id) }}"
+                     alt="" onerror="this.style.display='none'">
+                <span>{{ post.author.name[0] if post.author.name else '?' }}</span>
+            </div>
+            <a href="{{ url_for('user_details', user_id=post.author.id) }}">
+                {{ post.author.name }} {{ post.author.last_name }}
+            </a>
+            {% if post.tags %}
+            <span class="article-sep">·</span>
+            <div class="article-tags">
+                {% for tag in post.tags %}
+                <a class="a-tag" href="{{ url_for('tag_details', slug=tag.slug) }}">{{ tag.name }}</a>
+                {% endfor %}
+            </div>
+            {% endif %}
+            {% if current_user.is_authenticated and (current_user == post.author or current_user.is_admin()) %}
+            <a class="btn-ghost btn-sm" href="{{ url_for('edit_post', slug=post.slug) }}"
+               style="margin-left:auto">{{ _('Редактировать') }}</a>
+            {% endif %}
         </div>
-    </div>
+
+        <div class="article-body">{{ post_content | safe }}</div>
+    </article>
+
 </div>
-
-
 {% endblock %}

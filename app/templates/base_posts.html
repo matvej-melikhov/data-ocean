@@ -1,24 +1,46 @@
-<div class="news">
+{% if pages.items %}
+<div class="post-grid">
     {% for post in pages.items %}
-    <div class="card">
-        <div style="display: flex; gap: 10px;" class="card-header">
-            <img style="border-radius: 10px;" src="{{ url_for('user_avatar', user_id=post.author.id) }}" width="50px" alt="">
-            <div class="wrapper">
-                {{ _('Автор') }}: <a href="{{ url_for('user_details', user_id=post.author.id) }}">{{ post.author.name }}</a><br>
-                {{ _('Теги') }}: {% for tag in post.tags %}<a href="{{ url_for('tag_details', slug=tag.slug) }}" class="badge text-bg-success">{{ tag.name }}</a> {% endfor %}
-            </div>
+    <div class="post-card" onclick="location.href='{{ url_for('post_details', slug=post.slug) }}'">
+        {% if post.tags %}
+        <div class="pc-tags">
+            {% for tag in post.tags %}
+            <span class="pc-tag">{{ tag.name }}</span>
+            {% endfor %}
         </div>
-        <div class="card-body">
-            <p class="card-title"><b>{{ post.title }}</b> <br>
-            <p>{{ post.description }}</p>
-            </p>
-            <div class="d-grid gap-2">
-                <a href="{{ url_for('post_details', slug=post.slug) }}" class="btn btn-outline-primary">{{ _('Читать') }}</a>
+        {% endif %}
+
+        <h2 class="pc-title">{{ post.title }}</h2>
+
+        {% if post.description %}
+        <p class="pc-desc">{{ post.description }}</p>
+        {% endif %}
+
+        <div class="pc-foot">
+            <div class="pc-author">
+                <div class="pc-av" style="background:linear-gradient(135deg,#60A5FA,#2563EB)">
+                    <img src="{{ url_for('user_avatar', user_id=post.author.id) }}"
+                         alt=""
+                         onerror="this.style.display='none'">
+                    <span>{{ post.author.name[0] if post.author.name else '?' }}</span>
+                </div>
+                <a class="pc-name" href="{{ url_for('user_details', user_id=post.author.id) }}"
+                   onclick="event.stopPropagation()">{{ post.author.name }} {{ post.author.last_name }}</a>
             </div>
+            <span class="pc-read">Читать →</span>
         </div>
     </div>
-    <br>
     {% endfor %}
 </div>
+{% else %}
+<div class="post-grid">
+    <div class="post-empty">
+        {{ _('Постов пока нет.') }}
+        {% if current_user.is_authenticated %}
+        <br><a href="{{ url_for('create_post') }}">{{ _('Написать первый →') }}</a>
+        {% endif %}
+    </div>
+</div>
+{% endif %}
 
 {% include "pagination.html" %}

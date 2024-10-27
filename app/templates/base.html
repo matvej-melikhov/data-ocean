@@ -1,138 +1,132 @@
 <!doctype html>
-
 <html lang="ru" data-bs-theme="{{ g.theme }}">
-
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>
-    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/MathJax.js?config=TeX-AMS_HTML"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.3.1/styles/default.min.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.3.1/highlight.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
-    <title>{% block title %}{% endblock %}</title>
-</head>
-
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        hljs.highlightAll();
-    });
-</script>
-<script>
-    MathJax.Hub.Config({
-        tex2jax: {
-            inlineMath: [['$', '$']],
-            displayMath: [['$$', '$$'], ['\[', '\]']]
-        }
-    });
-    window.onload = function() {
-        MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.3.1/styles/github.min.css" id="hljs-light">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.3.1/styles/github-dark.min.css" id="hljs-dark" disabled>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.3.1/highlight.min.js"></script>
+    <!-- MathJax 3 — значительно лучше рендерит LaTeX -->
+    <script>
+    MathJax = {
+        tex: {
+            inlineMath:  [['$', '$'], ['\\(', '\\)']],
+            displayMath: [['$$', '$$'], ['\\[', '\\]']],
+            packages: {'[+]': ['ams']}
+        },
+        options: {
+            skipHtmlTags: ['script','noscript','style','textarea','pre']
+        },
+        startup: { typeset: false }
     };
-</script>
-<style>
-    table {
-        border-collapse: collapse;
-        margin: 15px 0px;
-    }
-    th, td {
-        border: 1px solid #ddd;
-        padding: 5px;
-    }
-    th {
-        background-color: #f2f2f2;
-    }
-    tr:hover {
-        background-color: #f5f5f5;
-    }
-    * {
-        text-decoration: none !important;
-    }
-</style>
-
+    </script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+    <title>{% block title %}{% endblock %} — DataOcean</title>
+</head>
 <body>
-    <header class="py-3 mb-3 border-bottom">
-        <div class="col-md-10 mx-auto container-fluid d-grid gap-3 align-items-center" style="grid-template-columns: 1fr 2fr;">
-          <div class="dropdown">
-            <a href="#" class="d-flex align-items-center col-lg-4 mb-2 mb-lg-0 link-body-emphasis text-decoration-none dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-                <img width="150px" src="{{ url_for('index') }}static/img/notion.svg" alt="">
-            </a>
-            <ul class="dropdown-menu text-small shadow" style="">
-                <li><a class="dropdown-item" href="{{ url_for('index') }}">{{ _('Главная') }}</a></li>
-                <li><a class="dropdown-item" href="{{ url_for('blog') }}">{{ _('Статья') }}</a></li>
-                <li><a class="dropdown-item" href="{{ url_for('create_post') }}">{{ _('Написать статью +') }}</a></li>
-            </ul>
-          </div>
 
-          <div class="d-flex align-items-center">
-            <form class="w-100 me-3" role="search" action="{{ url_for('search') }}" method="GET">
-                <div class="d-flex">
-                    <input type="search" class="form-control" placeholder="{{ _('Например, статистическая значимость') }}" name="s" value="{{ request.args.get('s', '') }}">
-                    <button class="btn btn-outline-success ms-2" type="submit">{{ _('Поиск') }}</button>
-                </div>
-            </form>
+<nav class="site-nav">
+    <div class="nav-inner">
 
-            {% if not current_user.is_anonymous %}
-                <div class="flex-shrink-0 dropdown">
-                    <a href="#" class="d-block link-body-emphasis text-decoration-none dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-                        <img style="border-radius: 100px;" src="{{ url_for('user_avatar', user_id=current_user.id) }}" width="32px" alt="">
-                    </a>
-                    <ul class="dropdown-menu text-small shadow" style="">
-                        <li><a class="dropdown-item" href="{{ url_for('profile') }}">{{ _('Профиль') }}</a></li>
-                        <li><a class="dropdown-item" href="{{ url_for('logout') }}">{{ _('Выйти из аккаунта') }}</a></li>
-                        <li><hr class="dropdown-divider"></li>
-                        <li><a class="dropdown-item" href="{{ url_for('set_language', lang='ru') }}">{{ _('Русский') }}</a></li>
-                        <li><a class="dropdown-item" href="{{ url_for('set_language', lang='en') }}">{{ _('Английский') }}</a></li>
-                        <li><hr class="dropdown-divider"></li>
-                        <li><a class="dropdown-item" href='#' id="toggle-theme">{{ _('Переключить тему') }}</a></li>
-                    </ul>
-                </div>
-            {% else %}
-                <div class="flex-shrink-0 dropdown">
-                    <a href="#" class="d-block link-body-emphasis text-decoration-none dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-                    </a>
-                    <ul class="dropdown-menu text-small shadow" style="">
-                        <li><a class="dropdown-item" href="{{ url_for('set_language', lang='ru') }}">{{ _('Русский') }}</a></li>
-                        <li><a class="dropdown-item" href="{{ url_for('set_language', lang='en') }}">{{ _('Английский') }}</a></li>
-                        <li><hr class="dropdown-divider"></li>
-                        <li><a class="dropdown-item" href='#' id="toggle-theme">{{ _('Переключить тему') }}</a></li>
-                    </ul>
-                </div>
-            {% endif %}
-          </div>
-        </div>
-    </header>
-
-    <br>
-    <div class="col-md-10 mx-auto">
-        {% for message in get_flashed_messages() %}
-            <div class="alert alert-primary" role="alert">
-                {{ message }}
+        <a class="logo" href="{{ url_for('index') }}">
+            <div class="logo-mark">
+                <img src="{{ url_for('static', filename='img/logo.svg') }}" width="26" height="26" alt="">
             </div>
+            <span>DataOcean</span><span class="logo-cursor"></span>
+        </a>
+
+        <form class="nav-search" action="{{ url_for('search') }}" method="GET">
+            <input class="nav-search-input" type="search" name="s"
+                   placeholder="{{ _('Поиск постов…') }}"
+                   value="{{ request.args.get('s', '') }}">
+            <button class="nav-search-btn" type="submit">{{ _('Найти') }}</button>
+        </form>
+
+        <div class="nav-right">
+            {% if not current_user.is_anonymous %}
+            <a class="nav-write" href="{{ url_for('create_post') }}">
+                <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M5 12h14"/></svg>
+                <span>{{ _('Написать') }}</span>
+            </a>
+            <div class="dropdown">
+                <div class="nav-av" data-bs-toggle="dropdown" aria-expanded="false">
+                    <img src="{{ url_for('user_avatar', user_id=current_user.id) }}"
+                         alt="{{ current_user.name }}"
+                         onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
+                    <span style="display:none">{{ current_user.name[0] if current_user.name else '?' }}</span>
+                </div>
+                <ul class="dropdown-menu dropdown-menu-end">
+                    <li><a class="dropdown-item" href="{{ url_for('profile') }}">{{ _('Профиль') }}</a></li>
+                    <li><hr class="dropdown-divider"></li>
+                    <li><a class="dropdown-item" href="{{ url_for('set_language', lang='ru') }}">🇷🇺 Русский</a></li>
+                    <li><a class="dropdown-item" href="{{ url_for('set_language', lang='en') }}">🇬🇧 English</a></li>
+                    <li><hr class="dropdown-divider"></li>
+                    <li><a class="dropdown-item" href="#" id="toggle-theme">{{ _('Сменить тему') }}</a></li>
+                    <li><hr class="dropdown-divider"></li>
+                    <li><a class="dropdown-item is-danger" href="{{ url_for('logout') }}">{{ _('Выйти') }}</a></li>
+                </ul>
+            </div>
+            {% else %}
+            <a class="btn-ghost btn-sm" href="{{ url_for('login') }}">{{ _('Войти') }}</a>
+            <div class="dropdown">
+                <div class="nav-av" data-bs-toggle="dropdown" aria-expanded="false">
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
+                </div>
+                <ul class="dropdown-menu dropdown-menu-end">
+                    <li><a class="dropdown-item" href="{{ url_for('set_language', lang='ru') }}">🇷🇺 Русский</a></li>
+                    <li><a class="dropdown-item" href="{{ url_for('set_language', lang='en') }}">🇬🇧 English</a></li>
+                    <li><hr class="dropdown-divider"></li>
+                    <li><a class="dropdown-item" href="#" id="toggle-theme">{{ _('Сменить тему') }}</a></li>
+                </ul>
+            </div>
+            {% endif %}
+        </div>
+
+    </div>
+</nav>
+
+<div class="main">
+    <div class="page">
+        {% for message in get_flashed_messages() %}
+        <div class="flash">
+            <span>{{ message }}</span>
+            <button class="flash-x" onclick="this.parentElement.remove()">×</button>
+        </div>
         {% endfor %}
 
         {% block content %}{% endblock %}
     </div>
+</div>
 
-<!-- ajax-запрос -->
 <script>
-    $(document).ready(function() {
-        $('#toggle-theme').click(function() {
-            $.ajax({
-                url: '/toggle_theme',
-                method: 'POST',
-                success: function(data) {
-                    // Удаляем атрибут data-bs-theme и добавляем новый
-                    $('html').removeAttr('data-bs-theme').attr('data-bs-theme', data.theme);
-                    console.log('Запрос выполнен ajax');
-                }
-            });
-        });
+document.addEventListener('DOMContentLoaded', function() {
+    hljs.highlightAll();
+    const dark = document.documentElement.getAttribute('data-bs-theme') === 'dark';
+    document.getElementById('hljs-light').disabled = dark;
+    document.getElementById('hljs-dark').disabled  = !dark;
+    // Типесет MathJax после загрузки контента
+    if (window.MathJax && MathJax.typesetPromise) {
+        MathJax.typesetPromise();
+    }
+});
+
+$(document).ready(function() {
+    $('#toggle-theme').click(function(e) {
+        e.preventDefault();
+        $.ajax({ url: '/toggle_theme', method: 'POST', success: function(d) {
+            $('html').attr('data-bs-theme', d.theme);
+            document.getElementById('hljs-light').disabled = (d.theme === 'dark');
+            document.getElementById('hljs-dark').disabled  = (d.theme !== 'dark');
+        }});
     });
+});
 </script>
 </body>
 </html>

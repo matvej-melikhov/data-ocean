@@ -1,7 +1,10 @@
-from app import application
+from app import application, db
 from app import models
 from app import routes
 from app.admin_views import *
 
+with application.app_context():
+    db.create_all()
+
 if __name__ == "__main__":
-    application.run(port=8000, debug=True)
+    application.run(debug=True, port=5000)

@@ -1,15 +1,12 @@
 {% extends "base.html" %}
-
-{% block title %}{{ _('Новости') }}{% endblock %}
-
+{% block title %}{{ _('Посты') }}{% endblock %}
 {% block content %}
-
-<h3>{{ _('Посты') }}</h3><br>
-
-<div class="d-grid gap-2">
-    <a href="{{ url_for('create_post') }}" class="btn btn-light" type="button">+ {{ _('Создать пост') }}</a>
-</div><br>
-
+<div class="sec-head">
+    <span class="sec-label">{{ _('Все посты') }}</span>
+    <a class="btn-solid btn-sm" href="{{ url_for('create_post') }}">
+        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M5 12h14"/></svg>
+        {{ _('Написать') }}
+    </a>
+</div>
 {% include "base_posts.html" %}
-
 {% endblock %}
