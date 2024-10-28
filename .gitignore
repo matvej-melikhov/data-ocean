@@ -8,5 +8,4 @@ __pycache__
 .vscode/
 instance/
 messages.pot
-app/translations/
 .pytest_cache/

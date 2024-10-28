@@ -1,0 +1,270 @@
+# English translations for DataOcean.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: DataOcean\n"
+"POT-Creation-Date: 2026-06-26 01:57+0300\n"
+"PO-Revision-Date: 2026-06-26 02:00+0300\n"
+"Language: en\n"
+"Language-Team: en\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.16.0\n"
+
+#: app/routes.py
+msgid "Вы успешно авторизовались!"
+msgstr "You have successfully logged in!"
+
+#: app/routes.py
+msgid "Неверный логин или пароль!"
+msgstr "Invalid login or password!"
+
+#: app/routes.py
+msgid "Вы вышли из аккаунта"
+msgstr "You have logged out"
+
+#: app/routes.py
+msgid "Пост создан!"
+msgstr "Post created!"
+
+#: app/routes.py
+msgid "Ошибка валидации!"
+msgstr "Validation error!"
+
+#: app/routes.py
+msgid "Пост изменен!"
+msgstr "Post updated!"
+
+#: app/routes.py
+msgid "Данные изменены!"
+msgstr "Profile updated!"
+
+#: app/routes.py
+msgid "Пользователь не найден :("
+msgstr "User not found :("
+
+#: app/routes.py
+msgid "Вы не можете подписаться на самого себя!"
+msgstr "You cannot follow yourself!"
+
+#: app/routes.py
+msgid "Подписка оформлена!"
+msgstr "Followed!"
+
+#: app/routes.py
+msgid "Вы не можете отписаться от самого себя!"
+msgstr "You cannot unfollow yourself!"
+
+#: app/routes.py
+msgid "Вы успешно отписались от пользователя!"
+msgstr "Unfollowed!"
+
+#: app/templates/base.html
+msgid "Поиск постов…"
+msgstr "Search posts…"
+
+#: app/templates/base.html
+msgid "Найти"
+msgstr "Search"
+
+#: app/templates/base.html app/templates/blog.html app/templates/search.html
+msgid "Написать"
+msgstr "Write"
+
+#: app/templates/base.html app/templates/profile.html
+msgid "Профиль"
+msgstr "Profile"
+
+#: app/templates/base.html
+msgid "Сменить тему"
+msgstr "Toggle theme"
+
+#: app/templates/base.html
+msgid "Выйти"
+msgstr "Log out"
+
+#: app/templates/base.html app/templates/login.html app/templates/registration.html
+msgid "Войти"
+msgstr "Log in"
+
+#: app/templates/base_posts.html
+msgid "Постов пока нет."
+msgstr "No posts yet."
+
+#: app/templates/base_posts.html
+msgid "Написать первый →"
+msgstr "Write the first one →"
+
+#: app/templates/blog.html app/templates/user_details.html
+msgid "Посты"
+msgstr "Posts"
+
+#: app/templates/blog.html
+msgid "Все посты"
+msgstr "All posts"
+
+#: app/templates/create_post.html
+msgid "Новый пост"
+msgstr "New post"
+
+#: app/templates/create_post.html
+msgid "Новая запись"
+msgstr "New entry"
+
+#: app/templates/create_post.html
+msgid "Отмена"
+msgstr "Cancel"
+
+#: app/templates/create_post.html
+msgid "Опубликовать"
+msgstr "Publish"
+
+#: app/templates/create_post.html
+msgid "Заголовок…"
+msgstr "Title…"
+
+#: app/templates/create_post.html
+msgid "Теги"
+msgstr "Tags"
+
+#: app/templates/create_post.html
+msgid "Краткое описание — одна-две фразы"
+msgstr "Short description — one or two sentences"
+
+#: app/templates/create_post.html
+msgid "Начните писать… Формулы: $E=mc^2$ или $$\\int_a^b f(x)dx$$"
+msgstr "Start writing… Formulas: $E=mc^2$ or $$\\int_a^b f(x)dx$$"
+
+#: app/templates/index.html
+msgid "Главная"
+msgstr "Home"
+
+#: app/templates/index.html
+msgid "Платформа для публикаций"
+msgstr "Publishing platform"
+
+#: app/templates/index.html
+msgid "Пишите то,"
+msgstr "Write what"
+
+#: app/templates/index.html
+msgid "что стоит"
+msgstr "is worth"
+
+#: app/templates/index.html
+msgid "читать."
+msgstr "reading."
+
+#: app/templates/index.html
+msgid "Место для статей, заметок и идей. Минимум лишнего — максимум смысла."
+msgstr "A place for articles, notes and ideas. Less noise — more meaning."
+
+#: app/templates/index.html
+msgid "Читать посты"
+msgstr "Read posts"
+
+#: app/templates/index.html
+msgid "Написать пост"
+msgstr "Write a post"
+
+#: app/templates/index.html
+msgid "Последняя публикация"
+msgstr "Latest post"
+
+#: app/templates/index.html
+msgid "публикаций"
+msgstr "posts"
+
+#: app/templates/index.html
+msgid "авторов"
+msgstr "authors"
+
+#: app/templates/index.html
+msgid "тегов"
+msgstr "tags"
+
+#: app/templates/login.html
+msgid "Вход"
+msgstr "Sign in"
+
+#: app/templates/login.html
+msgid "Войдите в аккаунт"
+msgstr "Sign in to your account"
+
+#: app/templates/login.html
+msgid "Нет аккаунта?"
+msgstr "Don't have an account?"
+
+#: app/templates/login.html app/templates/registration.html
+msgid "Зарегистрироваться"
+msgstr "Sign up"
+
+#: app/templates/post_details.html
+msgid "Другие посты"
+msgstr "Other posts"
+
+#: app/templates/post_details.html
+msgid "Нет других постов"
+msgstr "No other posts"
+
+#: app/templates/post_details.html
+msgid "Редактировать"
+msgstr "Edit"
+
+#: app/templates/profile.html
+msgid "Оставьте пустым, чтобы не менять"
+msgstr "Leave blank to keep unchanged"
+
+#: app/templates/profile.html
+msgid "Аватар"
+msgstr "Avatar"
+
+#: app/templates/profile.html
+msgid "Сохранить"
+msgstr "Save"
+
+#: app/templates/profile.html
+msgid "Ваши посты"
+msgstr "Your posts"
+
+#: app/templates/registration.html
+msgid "Регистрация"
+msgstr "Sign up"
+
+#: app/templates/registration.html
+msgid "Создайте аккаунт"
+msgstr "Create an account"
+
+#: app/templates/registration.html
+msgid "Уже есть аккаунт?"
+msgstr "Already have an account?"
+
+#: app/templates/search.html
+msgid "Поиск"
+msgstr "Search"
+
+#: app/templates/tag_details.html
+msgid "Тег"
+msgstr "Tag"
+
+#: app/templates/user_details.html
+msgid "Постов"
+msgstr "Posts"
+
+#: app/templates/user_details.html
+msgid "Подписчики"
+msgstr "Followers"
+
+#: app/templates/user_details.html
+msgid "Отписаться"
+msgstr "Unfollow"
+
+#: app/templates/user_details.html
+msgid "Подписаться"
+msgstr "Follow"
+
+#: app/templates/user_details.html
+msgid "Подписки"
+msgstr "Following"
