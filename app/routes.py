@@ -118,7 +118,7 @@ def blog():
     page = int(page) if page and page.isdigit() else 1
 
     posts = Post.query.order_by(-Post.id)
-    pages = posts.paginate(page=page, per_page=5)
+    pages = posts.paginate(page=page, per_page=6)
 
     return render_template("blog.html", pages=pages)
 
@@ -131,7 +131,7 @@ def search():
     page = int(page) if page and page.isdigit() else 1
 
     posts = Post.query.filter(Post.title.contains(s) | Post.content.contains(s) | Post.description.contains(s)).order_by(-Post.id)
-    pages = posts.paginate(page=page, per_page=5)
+    pages = posts.paginate(page=page, per_page=6)
 
     return render_template("search.html", pages=pages)
 
@@ -164,7 +164,7 @@ def post_details(slug):
     page = int(page) if page and page.isdigit() else 1
 
     posts = Post.query.order_by(-Post.id)
-    pages = posts.paginate(page=page, per_page=5)
+    pages = posts.paginate(page=page, per_page=6)
 
     post = Post.query.filter_by(slug=slug).first()
     if not post:
@@ -242,7 +242,7 @@ def profile():
     page = int(page) if page and page.isdigit() else 1
 
     posts = user.posts
-    pages = posts.paginate(page=page, per_page=5)
+    pages = posts.paginate(page=page, per_page=6)
     return render_template("profile.html", user=user, pages=pages, form=form)
 
 @application.route("/follow/<login>")

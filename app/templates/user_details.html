@@ -4,10 +4,10 @@
 <div class="profile-layout">
     <div>
         <div class="profile-av-box">
+            <div class="profile-av-init">{{ user.name[0] if user.name else '?' }}</div>
             <img src="{{ url_for('user_avatar', user_id=user.id) }}"
                  alt="{{ user.name }}"
-                 onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
-            <div class="profile-av-init" style="display:none">{{ user.name[0] if user.name else '?' }}</div>
+                 onerror="this.style.display='none'">
         </div>
         {% if user.roles %}
         <div class="profile-roles">

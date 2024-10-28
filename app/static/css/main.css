@@ -124,11 +124,15 @@ button { font-family: inherit; cursor: pointer; }
 .nav-av {
   width: 30px; height: 30px; border-radius: 50%;
   border: 1px solid var(--border); background: var(--blue-pale);
+  position: relative; overflow: hidden; flex-shrink: 0;
   display: flex; align-items: center; justify-content: center;
   font-size: 11px; font-weight: 700; color: var(--blue);
-  transition: border-color var(--t); overflow: hidden; flex-shrink: 0;
+  transition: border-color var(--t);
 }
-.nav-av img { width: 100%; height: 100%; object-fit: cover; }
+.nav-av img {
+  position: absolute; inset: 0;
+  width: 100%; height: 100%; object-fit: cover;
+}
 .nav-av:hover { border-color: var(--blue); }
 
 /* Dropdown */
@@ -238,11 +242,14 @@ button { font-family: inherit; cursor: pointer; }
 .pc-author { display: flex; align-items: center; gap: 7px; min-width: 0; }
 .pc-av {
   width: 22px; height: 22px; border-radius: 50%; flex-shrink: 0;
+  position: relative; overflow: hidden;
   display: flex; align-items: center; justify-content: center;
   font-size: 9px; font-weight: 800; color: #fff;
-  overflow: hidden; border: 1px solid transparent;
 }
-.pc-av img { width: 100%; height: 100%; object-fit: cover; }
+.pc-av img {
+  position: absolute; inset: 0;
+  width: 100%; height: 100%; object-fit: cover;
+}
 .pc-name {
   font-size: 12px; font-weight: 500; color: var(--muted);
   white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
@@ -254,6 +261,10 @@ button { font-family: inherit; cursor: pointer; }
 }
 .post-card:hover .pc-read { opacity: 1; }
 
+.post-card-empty {
+  background: var(--bg);
+  pointer-events: none;
+}
 .post-empty {
   padding: 40px 0; font-size: 14px; color: var(--muted);
   text-align: center; grid-column: 1 / -1;
@@ -344,11 +355,14 @@ button { font-family: inherit; cursor: pointer; }
 }
 .hc-av {
   width: 22px; height: 22px; border-radius: 50%; flex-shrink: 0;
+  position: relative; overflow: hidden;
   display: flex; align-items: center; justify-content: center;
   font-size: 9px; font-weight: 800; color: #fff;
-  overflow: hidden;
 }
-.hc-av img { width: 100%; height: 100%; object-fit: cover; }
+.hc-av img {
+  position: absolute; inset: 0;
+  width: 100%; height: 100%; object-fit: cover;
+}
 .hc-name { font-size: 12px; font-weight: 500; flex: 1; color: var(--muted); }
 .hc-tag {
   font-size: 11px; color: var(--blue);
@@ -517,12 +531,16 @@ textarea.f-inp, textarea.form-control { height: auto; resize: vertical; }
 }
 .article-meta-av {
   width: 24px; height: 24px; border-radius: 50%; flex-shrink: 0;
-  border: 1px solid var(--border); object-fit: cover; overflow: hidden;
+  border: 1px solid var(--border); overflow: hidden;
+  position: relative;
   display: flex; align-items: center; justify-content: center;
   background: var(--blue-pale); color: var(--blue);
   font-size: 10px; font-weight: 800;
 }
-.article-meta-av img { width: 100%; height: 100%; object-fit: cover; }
+.article-meta-av img {
+  position: absolute; inset: 0;
+  width: 100%; height: 100%; object-fit: cover;
+}
 .article-meta-row a { color: var(--ink); font-weight: 600; }
 .article-meta-row a:hover { color: var(--blue); }
 .article-sep { color: var(--border); }
@@ -571,12 +589,17 @@ textarea.f-inp, textarea.form-control { height: auto; resize: vertical; }
   aspect-ratio: 1; border-radius: var(--r-lg);
   border: 1px solid var(--border); overflow: hidden;
   background: var(--surface);
+  position: relative;
   display: flex; align-items: center; justify-content: center;
 }
-.profile-av-box img { width: 100%; height: 100%; object-fit: cover; }
+.profile-av-box img {
+  position: absolute; inset: 0;
+  width: 100%; height: 100%; object-fit: cover;
+}
 .profile-av-init {
   font-size: 44px; font-weight: 800;
   color: var(--blue); opacity: .3;
+  position: relative; /* под img */
 }
 .profile-roles { display: flex; gap: 4px; flex-wrap: wrap; margin-top: 10px; }
 .role-chip {

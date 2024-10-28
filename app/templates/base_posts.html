@@ -1,5 +1,6 @@
 {% if pages.items %}
 <div class="post-grid">
+    {% set count = pages.items | length %}
     {% for post in pages.items %}
     <div class="post-card" onclick="location.href='{{ url_for('post_details', slug=post.slug) }}'">
         {% if post.tags %}
@@ -32,6 +33,12 @@
     </div>
     {% endfor %}
 </div>
+    {% if count % 3 == 1 %}
+    <div class="post-card-empty"></div>
+    <div class="post-card-empty"></div>
+    {% elif count % 3 == 2 %}
+    <div class="post-card-empty"></div>
+    {% endif %}
 {% else %}
 <div class="post-grid">
     <div class="post-empty">
