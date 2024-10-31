@@ -1,0 +1,26 @@
+services:
+  db:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: dataocean
+      POSTGRES_USER: dataocean
+      POSTGRES_PASSWORD: dataocean
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+
+  web:
+    build: .
+    restart: unless-stopped
+    ports:
+      - "8000:8000"
+    environment:
+      DATABASE_URL: postgresql://dataocean:dataocean@db:5432/dataocean
+      SECRET_KEY: local-dev-secret-key
+    depends_on:
+      - db
+
+volumes:
+  postgres_data:
