@@ -1,4 +1,4 @@
-![DataOcean](docs/preview.png)
+![DataOcean Preview](docs/preview.png)
 
 # DataOcean
 
