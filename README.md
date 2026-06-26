@@ -1,3 +1,5 @@
+![DataOcean](docs/preview.png)
+
 # DataOcean
 
 A clean blogging platform with LaTeX support, built on Flask.
